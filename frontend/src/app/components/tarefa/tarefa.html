@@ -7,8 +7,8 @@
     </div>
     <button
       (click)="abrirNova()"
-      class="group inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-base font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all">
-      <svg class="size-5 transition-transform group-hover:rotate-90" viewBox="0 0 20 20" fill="currentColor"><path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z"/></svg>
+      class="group inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-tr from-blue-700 to-blue-500 text-white text-base font-bold antialiased shadow-lg shadow-blue-500/40 ring-1 ring-white/25 hover:shadow-blue-600/50 hover:from-blue-600 hover:to-blue-400 hover:-translate-y-0.5 transition-all">
+      <svg class="size-5 transition-transform group-hover:rotate-90 drop-shadow-md" viewBox="0 0 20 20" fill="currentColor"><path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z"/></svg>
       Nova tarefa
     </button>
   </div>
@@ -16,38 +16,38 @@
   <!-- Dashboard de estatísticas -->
   <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
     <!-- Total -->
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-500 to-blue-600 p-6 shadow-xl shadow-blue-600/20 text-white transform transition duration-300 hover:scale-[1.02]">
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-indigo-500 to-blue-700 p-6 shadow-xl shadow-blue-600/40 ring-1 ring-white/30 text-white antialiased transform transition duration-300 hover:scale-[1.02]">
       <div class="absolute -right-8 -top-8 size-32 rounded-full bg-white/10 blur-xl mix-blend-overlay"></div>
       <div class="relative z-10 flex flex-col gap-1">
-        <span class="text-blue-100 font-bold uppercase tracking-widest text-xs opacity-90">Total Formulado</span>
-        <span class="text-4xl sm:text-5xl font-black tracking-tight">{{ estatisticas().total }}</span>
+        <span class="text-white font-bold uppercase tracking-widest text-xs drop-shadow-sm">Total Formulado</span>
+        <span class="text-4xl sm:text-5xl font-black tracking-tight drop-shadow-md">{{ estatisticas().total }}</span>
       </div>
     </div>
     
     <!-- Pendentes -->
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-400 to-amber-500 p-6 shadow-xl shadow-orange-500/20 text-white transform transition duration-300 hover:scale-[1.02]">
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-orange-500 to-orange-600 p-6 shadow-xl shadow-orange-500/40 ring-1 ring-white/30 text-white antialiased transform transition duration-300 hover:scale-[1.02]">
       <div class="absolute -right-8 -top-8 size-32 rounded-full bg-white/10 blur-xl mix-blend-overlay"></div>
       <div class="relative z-10 flex flex-col gap-1">
-        <span class="text-orange-50 font-bold uppercase tracking-widest text-xs opacity-90">Pendentes</span>
-        <span class="text-4xl sm:text-5xl font-black tracking-tight">{{ estatisticas().pendentes }}</span>
+        <span class="text-white font-bold uppercase tracking-widest text-xs drop-shadow-sm">Pendentes</span>
+        <span class="text-4xl sm:text-5xl font-black tracking-tight drop-shadow-md">{{ estatisticas().pendentes }}</span>
       </div>
     </div>
 
     <!-- Em andamento -->
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-cyan-400 to-sky-500 p-6 shadow-xl shadow-cyan-500/20 text-white transform transition duration-300 hover:scale-[1.02]">
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-cyan-500 to-blue-600 p-6 shadow-xl shadow-cyan-500/40 ring-1 ring-white/30 text-white antialiased transform transition duration-300 hover:scale-[1.02]">
       <div class="absolute -right-8 -top-8 size-32 rounded-full bg-white/10 blur-xl mix-blend-overlay"></div>
       <div class="relative z-10 flex flex-col gap-1">
-        <span class="text-cyan-50 font-bold uppercase tracking-widest text-xs opacity-90">Em Andamento</span>
-        <span class="text-4xl sm:text-5xl font-black tracking-tight">{{ estatisticas().emAndamento }}</span>
+        <span class="text-white font-bold uppercase tracking-widest text-xs drop-shadow-sm">Em Andamento</span>
+        <span class="text-4xl sm:text-5xl font-black tracking-tight drop-shadow-md">{{ estatisticas().emAndamento }}</span>
       </div>
     </div>
 
     <!-- Concluidas -->
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-400 to-teal-500 p-6 shadow-xl shadow-emerald-500/20 text-white transform transition duration-300 hover:scale-[1.02]">
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-emerald-500 to-teal-600 p-6 shadow-xl shadow-emerald-500/40 ring-1 ring-white/30 text-white antialiased transform transition duration-300 hover:scale-[1.02]">
       <div class="absolute -right-8 -top-8 size-32 rounded-full bg-white/10 blur-xl mix-blend-overlay"></div>
       <div class="relative z-10 flex flex-col gap-1">
-        <span class="text-emerald-50 font-bold uppercase tracking-widest text-xs opacity-90">Concluídas</span>
-        <span class="text-4xl sm:text-5xl font-black tracking-tight">{{ estatisticas().concluidas }}</span>
+        <span class="text-white font-bold uppercase tracking-widest text-xs drop-shadow-sm">Concluídas</span>
+        <span class="text-4xl sm:text-5xl font-black tracking-tight drop-shadow-md">{{ estatisticas().concluidas }}</span>
       </div>
     </div>
   </div>

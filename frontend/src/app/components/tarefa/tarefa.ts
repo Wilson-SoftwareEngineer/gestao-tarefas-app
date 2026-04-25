@@ -179,11 +179,11 @@ export class TarefaComponent implements OnInit {
   statusBadgeClass(status: StatusTarefa): string {
     switch (status) {
       case StatusTarefa.PENDENTE:
-        return 'bg-gradient-to-r from-orange-400 to-amber-500 text-white shadow-orange-500/30';
+        return 'bg-gradient-to-b from-orange-500 to-orange-600 text-white shadow-md shadow-orange-500/40 ring-1 ring-white/30 antialiased';
       case StatusTarefa.EM_ANDAMENTO:
-        return 'bg-gradient-to-r from-cyan-400 to-blue-500 text-white shadow-cyan-500/30';
+        return 'bg-gradient-to-b from-blue-500 to-blue-600 text-white shadow-md shadow-blue-500/40 ring-1 ring-white/30 antialiased';
       case StatusTarefa.CONCLUIDA:
-        return 'bg-gradient-to-r from-emerald-400 to-teal-500 text-white shadow-emerald-500/30';
+        return 'bg-gradient-to-b from-emerald-500 to-emerald-600 text-white shadow-md shadow-emerald-500/40 ring-1 ring-white/30 antialiased';
     }
   }
 

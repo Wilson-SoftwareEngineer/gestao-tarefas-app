@@ -43,9 +43,9 @@
           </button>
         }
         <button (click)="salvar()" [disabled]="saving()"
-                class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold shadow-lg shadow-blue-500/30 hover:shadow-blue-600/40 hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:transform-none disabled:cursor-not-allowed inline-flex items-center gap-2">
+                class="px-6 py-3 rounded-xl bg-gradient-to-tr from-blue-700 to-blue-500 text-white text-sm font-bold antialiased shadow-lg shadow-blue-500/40 ring-1 ring-white/25 hover:shadow-blue-600/50 hover:from-blue-600 hover:to-blue-400 hover:-translate-y-0.5 transition-all disabled:opacity-50 disabled:transform-none disabled:cursor-not-allowed inline-flex items-center gap-2">
           @if (saving()) {
-            <svg class="size-4 animate-spin" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 0 1 4 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg>
+            <svg class="size-4 animate-spin drop-shadow-md" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 0 1 4 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg>
           }
           {{ editandoId() ? 'Atualizar' : 'Adicionar' }}
         </button>
