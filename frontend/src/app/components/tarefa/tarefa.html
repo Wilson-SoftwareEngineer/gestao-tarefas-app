@@ -1,0 +1,229 @@
+<section class="space-y-6">
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+    <div>
+      <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-slate-50">Tarefas</h1>
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Acompanhe e organize tudo o que precisa ser feito.</p>
+    </div>
+    <button
+      (click)="abrirNova()"
+      class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium shadow-sm transition">
+      <svg class="size-4" viewBox="0 0 20 20" fill="currentColor"><path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z"/></svg>
+      Nova tarefa
+    </button>
+  </div>
+
+  <!-- Dashboard de estatísticas -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+    <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
+      <p class="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">Total</p>
+      <p class="text-2xl font-bold mt-1 text-slate-900 dark:text-slate-50">{{ estatisticas().total }}</p>
+    </div>
+    <div class="rounded-2xl border border-amber-200/60 dark:border-amber-900/40 bg-amber-50/60 dark:bg-amber-500/5 p-4">
+      <p class="text-xs font-medium uppercase tracking-wider text-amber-700 dark:text-amber-400">Pendentes</p>
+      <p class="text-2xl font-bold mt-1 text-amber-900 dark:text-amber-200">{{ estatisticas().pendentes }}</p>
+    </div>
+    <div class="rounded-2xl border border-sky-200/60 dark:border-sky-900/40 bg-sky-50/60 dark:bg-sky-500/5 p-4">
+      <p class="text-xs font-medium uppercase tracking-wider text-sky-700 dark:text-sky-400">Em andamento</p>
+      <p class="text-2xl font-bold mt-1 text-sky-900 dark:text-sky-200">{{ estatisticas().emAndamento }}</p>
+    </div>
+    <div class="rounded-2xl border border-emerald-200/60 dark:border-emerald-900/40 bg-emerald-50/60 dark:bg-emerald-500/5 p-4">
+      <p class="text-xs font-medium uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Concluídas</p>
+      <p class="text-2xl font-bold mt-1 text-emerald-900 dark:text-emerald-200">{{ estatisticas().concluidas }}</p>
+    </div>
+  </div>
+
+  <!-- Formulário (mostra/esconde) -->
+  @if (mostrarFormulario()) {
+    <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 sm:p-6 shadow-sm">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-semibold text-slate-900 dark:text-slate-50">
+          {{ editandoId() ? 'Editar tarefa' : 'Nova tarefa' }}
+        </h2>
+        <button (click)="cancelar()" class="text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 transition" aria-label="Fechar">
+          <svg class="size-5" viewBox="0 0 20 20" fill="currentColor"><path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z"/></svg>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="sm:col-span-2">
+          <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">Título</label>
+          <input
+            type="text"
+            [ngModel]="form().titulo"
+            (ngModelChange)="atualizarCampo('titulo', $event)"
+            placeholder="Ex: Estudar Spring Boot"
+            class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 transition">
+        </div>
+
+        <div class="sm:col-span-2">
+          <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">Descrição</label>
+          <input
+            type="text"
+            [ngModel]="form().descricao"
+            (ngModelChange)="atualizarCampo('descricao', $event)"
+            placeholder="Detalhes da tarefa (opcional)"
+            class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 transition">
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">Categoria</label>
+          <select
+            [ngModel]="form().categoriaId"
+            (ngModelChange)="atualizarCampo('categoriaId', $event)"
+            class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 transition">
+            <option [ngValue]="null">Selecione...</option>
+            @for (cat of categorias(); track cat.id) {
+              <option [ngValue]="cat.id">{{ cat.nome }}</option>
+            }
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">Status</label>
+          <select
+            [ngModel]="form().status"
+            (ngModelChange)="atualizarCampo('status', $event)"
+            class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 transition">
+            @for (s of statusList; track s) {
+              <option [ngValue]="s">{{ statusLabel(s) }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="sm:col-span-2">
+          <label class="block text-xs font-medium text-slate-600 dark:text-slate-400 mb-1.5">Data e hora</label>
+          <input
+            type="datetime-local"
+            [ngModel]="form().dataHora"
+            (ngModelChange)="atualizarCampo('dataHora', $event)"
+            class="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 transition">
+        </div>
+      </div>
+
+      <div class="flex justify-end gap-2 mt-5">
+        <button (click)="cancelar()"
+                class="px-4 py-2 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+          Cancelar
+        </button>
+        <button (click)="salvar()" [disabled]="saving()"
+                class="px-4 py-2 rounded-lg text-sm font-medium bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm transition disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2">
+          @if (saving()) {
+            <svg class="size-4 animate-spin" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 0 1 4 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/></svg>
+          }
+          {{ editandoId() ? 'Atualizar' : 'Salvar' }}
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Filtros -->
+  <div class="flex flex-col sm:flex-row gap-3">
+    <div class="relative flex-1">
+      <svg class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-slate-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd"/></svg>
+      <input
+        type="text"
+        [ngModel]="busca()"
+        (ngModelChange)="busca.set($event)"
+        placeholder="Buscar por título ou descrição..."
+        class="w-full pl-10 pr-3 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 transition">
+    </div>
+    <select
+      [ngModel]="filtroStatus()"
+      (ngModelChange)="filtroStatus.set($event)"
+      class="px-3 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 transition">
+      <option value="TODOS">Todos os status</option>
+      @for (s of statusList; track s) {
+        <option [ngValue]="s">{{ statusLabel(s) }}</option>
+      }
+    </select>
+    <select
+      [ngModel]="filtroCategoriaId()"
+      (ngModelChange)="filtroCategoriaId.set($event)"
+      class="px-3 py-2.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500 transition">
+      <option value="TODAS">Todas as categorias</option>
+      @for (cat of categorias(); track cat.id) {
+        <option [ngValue]="cat.id">{{ cat.nome }}</option>
+      }
+    </select>
+  </div>
+
+  <!-- Lista de tarefas -->
+  @if (loading()) {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (_ of [1,2,3,4,5,6]; track $index) {
+        <div class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 animate-pulse">
+          <div class="h-4 w-20 bg-slate-200 dark:bg-slate-800 rounded mb-3"></div>
+          <div class="h-5 w-3/4 bg-slate-200 dark:bg-slate-800 rounded mb-2"></div>
+          <div class="h-4 w-full bg-slate-200 dark:bg-slate-800 rounded mb-1"></div>
+          <div class="h-4 w-2/3 bg-slate-200 dark:bg-slate-800 rounded"></div>
+        </div>
+      }
+    </div>
+  } @else if (tarefasFiltradas().length === 0) {
+    <div class="rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/30 p-12 text-center">
+      <div class="mx-auto size-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-3">
+        <svg class="size-6 text-slate-400" viewBox="0 0 20 20" fill="currentColor"><path d="M5.5 3A2.5 2.5 0 0 0 3 5.5v9A2.5 2.5 0 0 0 5.5 17h9a2.5 2.5 0 0 0 2.5-2.5v-9A2.5 2.5 0 0 0 14.5 3h-9Zm2 4a.75.75 0 0 0 0 1.5h5a.75.75 0 0 0 0-1.5h-5Zm0 3a.75.75 0 0 0 0 1.5h5a.75.75 0 0 0 0-1.5h-5Zm0 3a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-3Z"/></svg>
+      </div>
+      <p class="text-slate-700 dark:text-slate-300 font-medium">
+        @if (tarefas().length === 0) { Nenhuma tarefa cadastrada ainda. }
+        @else { Nenhuma tarefa encontrada com esses filtros. }
+      </p>
+      <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+        @if (tarefas().length === 0) { Clique em "Nova tarefa" para começar. }
+      </p>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (t of tarefasFiltradas(); track t.id) {
+        <article
+          class="group relative rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm hover:shadow-md transition overflow-hidden">
+          <div class="absolute left-0 top-0 bottom-0 w-1" [style.background-color]="t.categoria?.corHex"></div>
+
+          <div class="flex items-start justify-between gap-3 pl-2">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-2 flex-wrap">
+                <button
+                  (click)="alternarStatus(t)"
+                  [class]="statusBadgeClass(t.status)"
+                  class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium hover:opacity-80 transition"
+                  title="Clique para alternar o status">
+                  <span class="size-1.5 rounded-full bg-current"></span>
+                  {{ statusLabel(t.status) }}
+                </button>
+                @if (t.categoria) {
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                    <span class="size-2 rounded-full" [style.background-color]="t.categoria.corHex"></span>
+                    {{ t.categoria.nome }}
+                  </span>
+                }
+              </div>
+
+              <h3 class="font-semibold text-slate-900 dark:text-slate-50 truncate">{{ t.titulo }}</h3>
+              @if (t.descricao) {
+                <p class="text-sm text-slate-600 dark:text-slate-400 mt-1 line-clamp-2">{{ t.descricao }}</p>
+              }
+              @if (t.dataHora) {
+                <p class="text-xs text-slate-500 dark:text-slate-500 mt-3 inline-flex items-center gap-1">
+                  <svg class="size-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .2.08.39.22.53l3 3a.75.75 0 1 0 1.06-1.06L10.75 9.69V5Z" clip-rule="evenodd"/></svg>
+                  {{ t.dataHora | date:'dd/MM/yyyy HH:mm' }}
+                </p>
+              }
+            </div>
+          </div>
+
+          <div class="flex justify-end gap-1 mt-4 pl-2">
+            <button (click)="editar(t)" title="Editar"
+                    class="size-8 rounded-lg flex items-center justify-center text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-400 transition">
+              <svg class="size-4" viewBox="0 0 20 20" fill="currentColor"><path d="M2.695 14.763l-1.262 3.154a.5.5 0 0 0 .65.65l3.155-1.262a4 4 0 0 0 1.343-.885L17.5 5.5a2.121 2.121 0 0 0-3-3L3.58 13.42a4 4 0 0 0-.885 1.343Z"/></svg>
+            </button>
+            <button (click)="deletar(t)" title="Excluir"
+                    class="size-8 rounded-lg flex items-center justify-center text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10 dark:hover:text-rose-400 transition">
+              <svg class="size-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 1 0 .23 1.482l.149-.022.841 10.518A2.75 2.75 0 0 0 7.596 19h4.807a2.75 2.75 0 0 0 2.742-2.53l.841-10.52.149.023a.75.75 0 0 0 .23-1.482A41.03 41.03 0 0 0 14 4.193V3.75A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z" clip-rule="evenodd"/></svg>
+            </button>
+          </div>
+        </article>
+      }
+    </div>
+  }
+</section>
