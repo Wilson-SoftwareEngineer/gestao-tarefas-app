@@ -1,26 +1,32 @@
 <div class="min-h-screen flex flex-col">
-  <header class="sticky top-0 z-30 backdrop-blur bg-white/80 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800">
+  <!-- Gradient top line -->
+  <div class="h-1.5 w-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-500"></div>
+  
+  <header class="sticky top-0 z-30 bg-white/90 dark:bg-[#0f1115]/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800 shadow-sm">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-      <div class="flex items-center gap-2">
-        <div class="size-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-sm">
+      <div class="flex items-center gap-3">
+        <div class="size-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center shadow-md shadow-blue-500/20">
           <svg class="size-5 text-white" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd"/>
           </svg>
         </div>
-        <span class="text-base sm:text-lg font-semibold tracking-tight">Gestão de Tarefas</span>
+        <span class="text-lg sm:text-xl font-extrabold tracking-tight text-gray-900 dark:text-white bg-clip-text">
+          Task<span class="text-blue-600 dark:text-cyan-400">Flow</span>
+        </span>
       </div>
 
-      <nav class="flex items-center gap-1">
-        <a routerLink="/tarefas" routerLinkActive="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100"
-           class="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition">
+      <nav class="flex items-center gap-1.5 bg-gray-50 dark:bg-gray-900 p-1.5 rounded-2xl border border-gray-100 dark:border-gray-800">
+        <a routerLink="/tarefas" routerLinkActive="bg-white dark:bg-gray-800 text-blue-700 dark:text-cyan-400 shadow-sm font-semibold"
+           class="px-4 py-2 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all">
           Tarefas
         </a>
-        <a routerLink="/categorias" routerLinkActive="bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-slate-100"
-           class="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition">
+        <a routerLink="/categorias" routerLinkActive="bg-white dark:bg-gray-800 text-blue-700 dark:text-cyan-400 shadow-sm font-semibold"
+           class="px-4 py-2 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all">
           Categorias
         </a>
+        <div class="w-px h-5 bg-gray-200 dark:bg-gray-700 mx-1"></div>
         <button (click)="toggleTheme()" type="button"
-                class="ml-2 size-9 rounded-lg flex items-center justify-center text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-slate-100 transition"
+                class="size-9 rounded-xl flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-cyan-400 transition-colors"
                 [attr.aria-label]="theme() === 'dark' ? 'Mudar para tema claro' : 'Mudar para tema escuro'">
           @if (theme() === 'dark') {
             <svg class="size-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 2a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 10 2ZM10 15a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 10 15ZM10 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM15.657 5.404a.75.75 0 1 0-1.06-1.06l-1.061 1.06a.75.75 0 0 0 1.06 1.06l1.06-1.06ZM6.464 14.596a.75.75 0 1 0-1.06-1.06l-1.06 1.06a.75.75 0 0 0 1.06 1.06l1.06-1.06ZM18 10a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 18 10ZM5 10a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 5 10ZM14.596 15.657a.75.75 0 0 0 1.06-1.06l-1.06-1.061a.75.75 0 1 0-1.06 1.06l1.06 1.06ZM5.404 6.464a.75.75 0 0 0 1.06-1.06l-1.06-1.06a.75.75 0 1 0-1.061 1.06l1.06 1.06Z"/></svg>
