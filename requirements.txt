@@ -1,0 +1,27 @@
+# Pré-requisitos — Gestão de Tarefas
+# Lista de ferramentas necessárias para rodar o projeto localmente.
+# Dependências do backend ficam em backend/pom.xml
+# Dependências do frontend ficam em frontend/package.json
+
+# ─── Backend ───────────────────────────────────────────────────────────────────
+Java 21+          # linguagem e runtime (JDK, não JRE)
+Maven 3.9+        # gerenciador de build (ou use o wrapper: ./mvnw)
+
+# ─── Frontend ──────────────────────────────────────────────────────────────────
+Node.js 20+       # runtime JavaScript
+npm 10+           # gerenciador de pacotes (incluído com Node)
+Angular CLI 21+   # ferramenta de linha de comando do Angular
+                  # instalar com: npm install -g @angular/cli
+
+# ─── Banco de Dados ────────────────────────────────────────────────────────────
+MySQL 8.0+        # banco relacional (porta padrão: 3306)
+                  # o banco "db_tarefas" é criado automaticamente pelo Hibernate
+
+# ─── Variáveis de Ambiente (Backend) ──────────────────────────────────────────
+# Copie backend/.env.example para backend/.env e preencha:
+#   DB_HOST       = localhost
+#   DB_PORT       = 3306
+#   DB_NAME       = db_tarefas
+#   DB_USER       = root
+#   DB_PASSWORD   = sua_senha_aqui
+#   CORS_ORIGINS  = http://localhost:4200

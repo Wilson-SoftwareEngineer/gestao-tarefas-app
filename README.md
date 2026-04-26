@@ -1,120 +1,141 @@
-# Gestão de Tarefas — API REST com Spring Boot
+# Gestão de Tarefas — Full Stack
 
-Projeto de aprendizado Java com Spring Boot. API REST para gerenciar Tarefas e Categorias, conectada ao MySQL.
-
----
-
-## O que é esse projeto?
-
-Uma **API REST** — um servidor que recebe requisições HTTP (GET, POST, DELETE) e responde com dados em JSON. Pense nele como um garçom: o cliente (um app Angular, React, Postman, etc.) faz um pedido, o garçom leva à cozinha, e traz de volta a resposta.
+Projeto de aprendizado Java/Angular. Aplicação completa para gerenciar tarefas e categorias, com backend REST em Spring Boot e frontend SPA em Angular conectados a um banco MySQL.
 
 ---
 
-## Estrutura de Pastas
+## Stack Tecnológica
 
-```
-backend/
-└── src/
-    └── main/
-        ├── java/com/aprendendo/gestaotarefas/
-        │   ├── GestaoTarefasApplication.java   ← Ponto de entrada
-        │   ├── controller/                      ← Porta de entrada das requisições
-        │   ├── service/                         ← Lógica de negócio
-        │   ├── repository/                      ← Comunicação com o banco
-        │   └── model/                           ← Estrutura dos dados
-        └── resources/
-            └── application.properties           ← Configurações
-```
-
-Pense no projeto como um **restaurante**:
-
-| Camada | Papel no restaurante |
-|---|---|
-| `controller` | O garçom (recebe o pedido) |
-| `service` | O chef (processa o pedido) |
-| `repository` | O almoxarife (busca os ingredientes no estoque) |
-| `model` | A receita/ficha técnica (como o prato é estruturado) |
-| banco de dados | O estoque/despensa |
-
----
-
-## Arquitetura Visual
-
-```
-                        Internet / Frontend
-                               ↕ HTTP/JSON
-                        ┌─────────────┐
-                        │  Controller │  @RestController
-                        └──────┬──────┘
-                               ↕ objetos Java
-                        ┌──────┴──────┐
-                        │   Service   │  @Service (regras de negócio)
-                        └──────┬──────┘
-                               ↕ objetos Java
-                        ┌──────┴──────┐
-                        │ Repository  │  @Repository (JpaRepository)
-                        └──────┬──────┘
-                               ↕ SQL gerado pelo Hibernate
-                        ┌──────┴──────┐
-                        │    MySQL    │  db_tarefas
-                        └─────────────┘
-```
-
----
-
-## Tecnologias
-
-| Tecnologia | Versão | Papel |
+| Camada | Tecnologia | Versão |
 |---|---|---|
-| Java | 21 | Linguagem |
-| Spring Boot | 4.0.6 | Framework principal |
-| Spring Data JPA | — | Abstração do banco de dados |
-| Hibernate | — | ORM (converte objetos Java em SQL) |
-| MySQL | — | Banco de dados relacional |
-| Lombok | — | Geração de código boilerplate |
-| Maven | — | Gerenciador de build e dependências |
+| Backend | Java + Spring Boot | 21 / 4.0.6 |
+| ORM | Spring Data JPA + Hibernate | — |
+| Validação | Jakarta Bean Validation | — |
+| Banco de dados | MySQL | 8.0+ |
+| Build (backend) | Maven | 3.9+ |
+| Frontend | Angular (Standalone + Signals) | 21 |
+| Estilos | Tailwind CSS | 4 |
+| Runtime JS | Node.js + npm | 20 / 10+ |
+
+---
+
+## Arquitetura
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                  BROWSER (usuário)                          │
+│               Angular SPA · localhost:4200                  │
+│                                                             │
+│  Components → Services → HttpClient → errorInterceptor     │
+└────────────────────────────┬────────────────────────────────┘
+                             │ HTTP/JSON (REST)
+                             ▼
+┌─────────────────────────────────────────────────────────────┐
+│              Spring Boot API · localhost:8080               │
+│                                                             │
+│  Controller → Service → Repository → JPA/Hibernate         │
+└────────────────────────────┬────────────────────────────────┘
+                             │ JDBC
+                             ▼
+                     ┌──────────────┐
+                     │   MySQL DB   │
+                     │  db_tarefas  │
+                     └──────────────┘
+```
+
+---
+
+## Estrutura do Projeto
+
+```
+gestao-tarefas-app/
+├── backend/                          ← API Spring Boot
+│   ├── src/main/java/com/aprendendo/gestaotarefas/
+│   │   ├── GestaoTarefasApplication.java
+│   │   ├── config/                   ← CORS, configurações
+│   │   ├── controller/               ← endpoints REST
+│   │   ├── dto/                      ← request/response DTOs
+│   │   ├── exception/                ← tratamento global de erros
+│   │   ├── model/                    ← entidades JPA
+│   │   ├── repository/               ← acesso ao banco
+│   │   └── service/                  ← lógica de negócio
+│   ├── src/main/resources/
+│   │   ├── application.properties    ← configuração base
+│   │   ├── application-dev.properties
+│   │   └── application-prod.properties
+│   ├── .env.example                  ← template de variáveis de ambiente
+│   └── pom.xml
+│
+├── frontend/                         ← SPA Angular
+│   ├── src/app/
+│   │   ├── components/               ← tarefa, categoria, dashboard
+│   │   ├── services/                 ← API, toast, confirm, theme
+│   │   ├── models/                   ← interfaces TypeScript
+│   │   ├── interceptors/             ← tratamento global de erros HTTP
+│   │   └── app.config.ts             ← configuração standalone
+│   └── package.json
+│
+├── requirements.txt                  ← pré-requisitos do sistema
+├── ANALISE_PROJETO.md               ← análise didática detalhada
+└── README.md
+```
+
+---
+
+## Pré-requisitos
+
+Veja [requirements.txt](requirements.txt) para a lista completa. Resumindo:
+
+- **Java 21+** e **Maven 3.9+** (ou use `./mvnw`)
+- **Node.js 20+** e **npm 10+**
+- **Angular CLI 21+**: `npm install -g @angular/cli`
+- **MySQL 8.0+** rodando na porta 3306
 
 ---
 
 ## Configuração do Banco de Dados
 
-Arquivo: `src/main/resources/application.properties`
+Copie o template de variáveis de ambiente:
 
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/db_tarefas?createDatabaseIfNotExist=true
-spring.datasource.username=root
-spring.datasource.password=SUA_SENHA
-spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
+```bash
+cp backend/.env.example backend/.env
 ```
 
-**O que cada linha faz:**
+Edite `backend/.env` com suas credenciais:
 
-- `datasource.url` — endereço do banco: `localhost`, porta `3306`, banco `db_tarefas`. O parâmetro `createDatabaseIfNotExist=true` cria o banco automaticamente se não existir.
-- `ddl-auto=update` — o Hibernate cria ou atualiza as tabelas automaticamente com base nos seus modelos Java. Você nunca precisa escrever `CREATE TABLE`.
-- `show-sql=true` — imprime no console todo SQL executado (ótimo para aprendizado).
+```dotenv
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=db_tarefas
+DB_USER=root
+DB_PASSWORD=sua_senha_aqui
+CORS_ORIGINS=http://localhost:4200
+```
 
-> **Aviso:** nunca deixe senhas em texto puro no código. Em produção, use variáveis de ambiente.
+> O banco `db_tarefas` é criado automaticamente pelo Hibernate na primeira execução.
 
 ---
 
-## Tabelas Geradas Automaticamente
+## Como Executar
 
-O Hibernate lê as classes `@Entity` e cria as tabelas no MySQL:
+### Backend
 
-```
-Tabela: categoria          Tabela: tarefa
-+----+----------+--------+  +----+----------+-----------+----------+--------------+
-| id | nome     | corHex |  | id | titulo   | descricao | status   | categoria_id |
-+----+----------+--------+  +----+----------+-----------+----------+--------------+
-|  1 | Trabalho | #FF0000|  |  1 | Reunião  | ...       | PENDENTE | 1            |
-|  2 | Pessoal  | #00FF00|  |  2 | Academia | ...       | CONCLUIDA| 2            |
+```bash
+cd backend
+./mvnw spring-boot:run
 ```
 
-A coluna `categoria_id` em `tarefa` é uma **chave estrangeira** para a tabela `categoria` (relacionamento `@ManyToOne`).
+API disponível em `http://localhost:8080`.
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+ng serve
+```
+
+Aplicação disponível em `http://localhost:4200`.
 
 ---
 
@@ -122,250 +143,77 @@ A coluna `categoria_id` em `tarefa` é uma **chave estrangeira** para a tabela `
 
 ### Tarefas — `/api/tarefas`
 
-| Método | URL | Descrição |
-|---|---|---|
-| GET | `/api/tarefas` | Lista todas as tarefas |
-| POST | `/api/tarefas` | Cria uma nova tarefa |
-| DELETE | `/api/tarefas/{id}` | Remove a tarefa pelo id |
-
-**Exemplo de corpo para POST:**
-```json
-{
-  "titulo": "Estudar Java",
-  "descricao": "Revisar anotações do Spring Boot",
-  "status": "PENDENTE",
-  "categoria": { "id": 1 }
-}
-```
+| Método | URL | Descrição | Status |
+|---|---|---|---|
+| GET | `/api/tarefas` | Lista todas as tarefas | 200 |
+| GET | `/api/tarefas/{id}` | Busca tarefa por ID | 200 / 404 |
+| GET | `/api/tarefas/estatisticas` | Contagens por status | 200 |
+| POST | `/api/tarefas` | Cria nova tarefa | 201 |
+| PUT | `/api/tarefas/{id}` | Atualiza tarefa completa | 200 |
+| PATCH | `/api/tarefas/{id}/status` | Atualiza apenas o status | 200 |
+| DELETE | `/api/tarefas/{id}` | Remove tarefa | 204 |
 
 ### Categorias — `/api/categorias`
 
-| Método | URL | Descrição |
-|---|---|---|
-| GET | `/api/categorias` | Lista todas as categorias |
-| POST | `/api/categorias` | Cria uma nova categoria |
-| DELETE | `/api/categorias/{id}` | Remove a categoria pelo id |
+| Método | URL | Descrição | Status |
+|---|---|---|---|
+| GET | `/api/categorias` | Lista todas as categorias | 200 |
+| POST | `/api/categorias` | Cria nova categoria | 201 |
+| PUT | `/api/categorias/{id}` | Atualiza categoria | 200 |
+| DELETE | `/api/categorias/{id}` | Remove categoria | 204 |
 
-**Exemplo de corpo para POST:**
-```json
-{
-  "nome": "Trabalho",
-  "corHex": "#FF5733"
-}
-```
-
----
-
-## Explicação de Cada Camada
-
-### `GestaoTarefasApplication.java` — Ponto de Ignição
-
-```java
-@SpringBootApplication
-public class GestaoTarefasApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(GestaoTarefasApplication.class, args);
-    }
-}
-```
-
-O único `main()` do projeto. A anotação `@SpringBootApplication` faz três coisas:
-1. Ativa o autoconfigurador do Spring Boot
-2. Escaneia todas as subpastas em busca de `@Controller`, `@Service`, `@Repository`
-3. Ativa as configurações declaradas no `application.properties`
-
----
-
-### `model/` — Estrutura dos Dados
-
-Define como os dados são representados em Java e no banco.
-
-**`StatusTarefa.java`** — enum com valores fixos:
-```java
-public enum StatusTarefa {
-    PENDENTE, EM_ANDAMENTO, CONCLUIDA;
-}
-```
-
-**`Categoria.java`**:
-```java
-@Entity   // → vira tabela no banco
-@Data     // → Lombok gera getters, setters, equals, hashCode, toString
-public class Categoria {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // → auto-incremento
-    private Long id;
-
-    private String nome;
-    private String corHex;
-}
-```
-
-**`Tarefa.java`**:
-```java
-@Entity
-@Data
-public class Tarefa {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String titulo;
-    private String descricao;
-    private LocalDateTime dataHora;
-
-    @Enumerated(EnumType.STRING)   // → salva "PENDENTE" no banco, não 0/1/2
-    private StatusTarefa status;
-
-    @ManyToOne                     // → muitas tarefas para uma categoria
-    @JoinColumn(name = "categoria_id")  // → coluna de chave estrangeira
-    private Categoria categoria;
-}
-```
-
----
-
-### `repository/` — Porta do Banco de Dados
-
-```java
-@Repository
-public interface TarefaRepository extends JpaRepository<Tarefa, Long> {
-}
-```
-
-Interface vazia que herda automaticamente:
-
-| Método | SQL equivalente |
-|---|---|
-| `findAll()` | `SELECT * FROM tarefa` |
-| `findById(id)` | `SELECT * FROM tarefa WHERE id = ?` |
-| `save(tarefa)` | `INSERT` ou `UPDATE` |
-| `deleteById(id)` | `DELETE FROM tarefa WHERE id = ?` |
-| `count()` | `SELECT COUNT(*) FROM tarefa` |
-
-O `<Tarefa, Long>` informa: "gerencia a entidade `Tarefa` cuja chave primária é `Long`".
-
----
-
-### `service/` — Lógica de Negócio
-
-```java
-@Service
-public class TarefaService {
-
-    @Autowired  // → Spring injeta automaticamente uma instância do repository
-    private TarefaRepository repository;
-
-    public List<Tarefa> listarTodas() {
-        return repository.findAll();
-    }
-
-    public Tarefa salvar(Tarefa tarefa) {
-        return repository.save(tarefa);
-    }
-
-    public void deletar(Long id) {
-        repository.deleteById(id);
-    }
-}
-```
-
-É aqui que ficam as **regras de negócio**. Exemplo do que poderia ser adicionado:
-```java
-public Tarefa salvar(Tarefa tarefa) {
-    if (tarefa.getTitulo() == null || tarefa.getTitulo().isBlank()) {
-        throw new IllegalArgumentException("Título é obrigatório");
-    }
-    if (tarefa.getStatus() == null) {
-        tarefa.setStatus(StatusTarefa.PENDENTE);
-    }
-    return repository.save(tarefa);
-}
-```
-
-`@Autowired` é a **injeção de dependência**: em vez de `new TarefaRepository()`, você pede ao Spring para criar e gerenciar o objeto por você.
-
----
-
-### `controller/` — A API Exposta ao Mundo
-
-```java
-@RestController                      // → responde requisições HTTP com JSON
-@RequestMapping("/api/tarefas")      // → endereço base de todos os métodos
-@CrossOrigin(origins = "*")          // → permite acesso de outros domínios (CORS)
-public class TarefaController {
-
-    @Autowired
-    private TarefaService service;
-
-    @GetMapping
-    public List<Tarefa> listarTodas() {
-        return service.listarTodas();
-    }
-
-    @PostMapping
-    public Tarefa criar(@RequestBody Tarefa tarefa) {  // → converte JSON em objeto Java
-        return service.salvar(tarefa);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {  // → captura o {id} da URL
-        service.deletar(id);
-        return ResponseEntity.noContent().build();  // → HTTP 204 No Content
-    }
-}
-```
-
----
-
-## Fluxo Completo de uma Requisição
-
-Imagine um `POST /api/tarefas` com o JSON `{ "titulo": "Estudar Java", "status": "PENDENTE" }`:
-
-```
-HTTP Request (JSON)
-        ↓
-[Controller] TarefaController.criar()
-    → deserializa o JSON em objeto Tarefa
-        ↓
-[Service] TarefaService.salvar()
-    → aplica regras de negócio
-        ↓
-[Repository] TarefaRepository.save()
-    → traduz para SQL
-        ↓
-[Hibernate/JPA]
-    → INSERT INTO tarefa (titulo, status, ...) VALUES (...)
-        ↓
-[MySQL] db_tarefas
-    → salva no disco
-        ↓
-(resposta sobe pelo mesmo caminho)
-        ↓
-HTTP Response (JSON com o objeto salvo, incluindo o id gerado)
-```
-
----
-
-## Como Executar
-
-**Pré-requisitos:**
-- Java 21 instalado
-- MySQL rodando na porta 3306
+**Exemplo — criar tarefa:**
 
 ```bash
-cd backend
-./mvnw spring-boot:run
+curl -X POST http://localhost:8080/api/tarefas \
+  -H "Content-Type: application/json" \
+  -d '{
+    "titulo": "Estudar Spring Boot",
+    "descricao": "Capítulo 3 — JPA",
+    "status": "PENDENTE",
+    "categoriaId": 1
+  }'
 ```
-
-O servidor sobe em `http://localhost:8080`.
 
 ---
 
-## Próximos Passos Sugeridos
+## Camadas do Backend
 
-1. **Adicionar `@PutMapping`** — para atualizar uma tarefa existente (hoje só há GET, POST e DELETE).
-2. **Busca por status** — adicionar `findByStatus(StatusTarefa status)` no repository.
-3. **Validação com `@Valid`** — usar `@NotBlank`, `@NotNull` nos campos do model para rejeitar dados inválidos.
-4. **Tratamento de erros** — usar `@ExceptionHandler` para retornar mensagens de erro em JSON.
-5. **Mover credenciais para variáveis de ambiente** — nunca deixar senha hardcoded no código.
+| Camada | Responsabilidade |
+|---|---|
+| `controller/` | Recebe requisições HTTP, valida entrada com `@Valid`, retorna DTOs |
+| `service/` | Lógica de negócio — não conhece HTTP nem SQL |
+| `repository/` | Acesso ao banco via Spring Data JPA (CRUD herdado de `JpaRepository`) |
+| `model/` | Entidades JPA mapeadas para tabelas MySQL |
+| `dto/` | Contratos da API (separa entidades internas da representação externa) |
+| `exception/` | `GlobalExceptionHandler` formata todos os erros como JSON padronizado |
+| `config/` | CORS configurável por variável de ambiente |
+
+---
+
+## Features do Frontend
+
+- **Signals** e `computed()` para estado reativo granular
+- **`ChangeDetectionStrategy.OnPush`** em todos os componentes
+- **Interceptor HTTP global** para tratamento de erros com toasts
+- **Tema claro/escuro** persistido no `localStorage`
+- **Confirmação antes de ações destrutivas** (exclusão)
+- **Filtros em tempo real** por status, categoria e texto livre
+- **Estatísticas** do dashboard calculadas via `computed()`
+
+---
+
+## Análise Didática
+
+Veja [ANALISE_PROJETO.md](ANALISE_PROJETO.md) para uma explicação detalhada de cada camada, padrões de projeto aplicados e o fluxo completo de uma requisição do clique do usuário até o banco de dados.
+
+---
+
+## Próximos Passos
+
+- [ ] Autenticação JWT (Spring Security + guarda de rotas Angular)
+- [ ] Paginação nos endpoints e na lista do frontend
+- [ ] Testes unitários e de integração (JUnit 5 + Mockito / Jasmine)
+- [ ] Docker Compose para subir toda a stack com um comando
+- [ ] CI/CD com GitHub Actions
+- [ ] Swagger / OpenAPI via `springdoc-openapi`
