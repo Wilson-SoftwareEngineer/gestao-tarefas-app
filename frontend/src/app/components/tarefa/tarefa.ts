@@ -168,6 +168,11 @@ export class TarefaComponent implements OnInit {
     });
   }
 
+  estaAtrasada(t: Tarefa): boolean {
+    if (!t.dataHora || t.status === StatusTarefa.CONCLUIDA) return false;
+    return new Date(t.dataHora) < new Date();
+  }
+
   statusLabel(status: StatusTarefa): string {
     switch (status) {
       case StatusTarefa.PENDENTE: return 'Pendente';
@@ -179,11 +184,11 @@ export class TarefaComponent implements OnInit {
   statusBadgeClass(status: StatusTarefa): string {
     switch (status) {
       case StatusTarefa.PENDENTE:
-        return 'bg-gradient-to-b from-orange-500 to-orange-600 text-white shadow-md shadow-orange-500/40 ring-1 ring-white/30 antialiased';
+        return 'bg-gradient-to-b from-pink-500 to-rose-600 text-white shadow-md shadow-pink-500/40 ring-1 ring-white/30 antialiased';
       case StatusTarefa.EM_ANDAMENTO:
-        return 'bg-gradient-to-b from-blue-500 to-blue-600 text-white shadow-md shadow-blue-500/40 ring-1 ring-white/30 antialiased';
+        return 'bg-gradient-to-b from-amber-400 to-yellow-500 text-white shadow-md shadow-amber-400/40 ring-1 ring-white/30 antialiased';
       case StatusTarefa.CONCLUIDA:
-        return 'bg-gradient-to-b from-emerald-500 to-emerald-600 text-white shadow-md shadow-emerald-500/40 ring-1 ring-white/30 antialiased';
+        return 'bg-gradient-to-b from-teal-400 to-teal-600 text-white shadow-md shadow-teal-500/40 ring-1 ring-white/30 antialiased';
     }
   }
 

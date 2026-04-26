@@ -25,7 +25,7 @@
     </div>
     
     <!-- Pendentes -->
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-orange-500 to-orange-600 p-6 shadow-xl shadow-orange-500/40 ring-1 ring-white/30 text-white antialiased transform transition duration-300 hover:scale-[1.02]">
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-pink-500 to-rose-600 p-6 shadow-xl shadow-pink-500/40 ring-1 ring-white/30 text-white antialiased transform transition duration-300 hover:scale-[1.02]">
       <div class="absolute -right-8 -top-8 size-32 rounded-full bg-white/10 blur-xl mix-blend-overlay"></div>
       <div class="relative z-10 flex flex-col gap-1">
         <span class="text-white font-bold uppercase tracking-widest text-xs drop-shadow-sm">Pendentes</span>
@@ -34,7 +34,7 @@
     </div>
 
     <!-- Em andamento -->
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-cyan-500 to-blue-600 p-6 shadow-xl shadow-cyan-500/40 ring-1 ring-white/30 text-white antialiased transform transition duration-300 hover:scale-[1.02]">
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-amber-400 to-yellow-500 p-6 shadow-xl shadow-amber-400/40 ring-1 ring-white/30 text-white antialiased transform transition duration-300 hover:scale-[1.02]">
       <div class="absolute -right-8 -top-8 size-32 rounded-full bg-white/10 blur-xl mix-blend-overlay"></div>
       <div class="relative z-10 flex flex-col gap-1">
         <span class="text-white font-bold uppercase tracking-widest text-xs drop-shadow-sm">Em Andamento</span>
@@ -43,7 +43,7 @@
     </div>
 
     <!-- Concluidas -->
-    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-emerald-500 to-teal-600 p-6 shadow-xl shadow-emerald-500/40 ring-1 ring-white/30 text-white antialiased transform transition duration-300 hover:scale-[1.02]">
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-b from-teal-400 to-teal-600 p-6 shadow-xl shadow-teal-500/40 ring-1 ring-white/30 text-white antialiased transform transition duration-300 hover:scale-[1.02]">
       <div class="absolute -right-8 -top-8 size-32 rounded-full bg-white/10 blur-xl mix-blend-overlay"></div>
       <div class="relative z-10 flex flex-col gap-1">
         <span class="text-white font-bold uppercase tracking-widest text-xs drop-shadow-sm">Concluídas</span>
@@ -202,7 +202,9 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       @for (t of tarefasFiltradas(); track t.id) {
         <article
-          class="group relative rounded-3xl bg-white dark:bg-[#151923] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:hover:shadow-blue-900/10 hover:-translate-y-1 transition duration-300 overflow-hidden ring-1 ring-gray-100 dark:ring-gray-800/60">
+          [class]="estaAtrasada(t)
+            ? 'group relative rounded-3xl bg-white dark:bg-[#151923] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition duration-300 overflow-hidden ring-2 ring-red-400 dark:ring-red-500'
+            : 'group relative rounded-3xl bg-white dark:bg-[#151923] p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.2)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] dark:hover:shadow-blue-900/10 hover:-translate-y-1 transition duration-300 overflow-hidden ring-1 ring-gray-100 dark:ring-gray-800/60'">
           <div class="absolute left-0 top-0 bottom-0 w-1.5 opacity-90 transition-all duration-300 group-hover:w-2" [style.background-color]="t.categoria?.corHex || '#94a3b8'"></div>
 
           <div class="flex items-start justify-between gap-3 pl-3">
@@ -216,6 +218,12 @@
                   <span class="size-1.5 rounded-full bg-current"></span>
                   {{ statusLabel(t.status) }}
                 </button>
+                @if (estaAtrasada(t)) {
+                  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 ring-1 ring-red-300 dark:ring-red-500/40">
+                    <svg class="size-3" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495ZM10 5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 5Zm0 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/></svg>
+                    Atrasada
+                  </span>
+                }
                 @if (t.categoria) {
                   <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                     <span class="size-2 rounded-full" [style.background-color]="t.categoria.corHex"></span>
@@ -229,7 +237,7 @@
                 <p class="text-sm text-slate-600 dark:text-slate-400 mt-1 line-clamp-2">{{ t.descricao }}</p>
               }
               @if (t.dataHora) {
-                <p class="text-xs text-slate-500 dark:text-slate-500 mt-3 inline-flex items-center gap-1">
+                <p [class]="estaAtrasada(t) ? 'text-xs text-red-500 dark:text-red-400 mt-3 inline-flex items-center gap-1 font-semibold' : 'text-xs text-slate-500 dark:text-slate-500 mt-3 inline-flex items-center gap-1'">
                   <svg class="size-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm.75-13a.75.75 0 0 0-1.5 0v5c0 .2.08.39.22.53l3 3a.75.75 0 1 0 1.06-1.06L10.75 9.69V5Z" clip-rule="evenodd"/></svg>
                   {{ t.dataHora | date:'dd/MM/yyyy HH:mm' }}
                 </p>
